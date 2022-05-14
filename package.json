@@ -1,0 +1,19 @@
+{
+  "name": "puppeteer-test",
+  "version": "1.0.0",
+  "main": "index.js",
+  "license": "MIT",
+  "scripts": {
+    "start": "nodemon ./src/index.ts"
+  },
+  "dependencies": {
+    "chalk": "4.0.0",
+    "puppeteer": "^13.7.0",
+    "uuid": "^8.3.2"
+  },
+  "devDependencies": {
+    "@types/puppeteer": "^5.4.6",
+    "@types/uuid": "^8.3.4",
+    "nodemon": "^2.0.16"
+  }
+}
