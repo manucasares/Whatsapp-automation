@@ -8,14 +8,14 @@ export const getName = (cliente: ICliente) => {
 };
 
 export const getMensajeTelecentro = (cliente: ICliente) =>
-  `${cliente.femenino ? 'Sra.' : 'Sr.'} ${
+  `${getGenderPrefix(cliente)} ${
     cliente.nombre
   }, estoy retirando los equipos de TELECENTRO, mi nombre es Eduardo Casares, estoy recorriendo su zona mañana por la mañana, la dirección que tengo es ${
     cliente.direccion
   }. Para su tranquilidad le informo que yo no ingreso a su domicilio, los equipos me los entregan en la puerta. Disculpe la molestia y desde ya, muchas gracias.`;
 
 export const getMensajeDirectTV = (cliente: ICliente) =>
-  `${cliente.femenino ? 'Sra.' : 'Sr.'} ${
+  `${getGenderPrefix(cliente)} ${
     cliente.nombre
   }, estoy retirando los equipos de DirectTV, mi nombre es Eduardo Casares, estoy recorriendo su zona mañana por la mañana, la dirección que tengo es ${
     cliente.direccion
@@ -24,4 +24,8 @@ export const getMensajeDirectTV = (cliente: ICliente) =>
 export const MENSAJES: Record<Mensaje, (cliente: ICliente) => string> = {
   DIRECT_TV: getMensajeDirectTV,
   TELECENTRO: getMensajeTelecentro,
+};
+
+const getGenderPrefix = (cliente: ICliente): string => {
+  return cliente.genero == 'f' ? 'Sra.' : 'Sr.';
 };

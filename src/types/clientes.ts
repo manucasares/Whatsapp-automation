@@ -1,11 +1,19 @@
 import { Mensaje } from './mensajes';
 
 export interface ICliente {
-  id: string;
   nombre: string;
+  apellido: string;
   numero_identificador: string;
   telefono: string;
   direccion: string;
-  mensaje: Mensaje;
-  femenino: boolean;
+  empresa: Mensaje;
+  genero: 'f' | 'm' | undefined;
 }
+
+// genero: string | undefined;
+// nombre: string;
+// apellido: string;
+// numero_identificador: string;
+// telefono: string;
+// direccion: string;
+// empresa: Mensaje;

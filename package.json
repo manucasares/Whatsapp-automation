@@ -7,14 +7,17 @@
     "start": "nodemon ./src/index.ts"
   },
   "dependencies": {
+    "axios": "^0.27.2",
     "chalk": "4.0.0",
     "puppeteer": "^13.7.0",
+    "typescript": "4.6.4",
     "uuid": "^8.3.2",
-    "typescript": "4.6.4"
+    "xlsx": "^0.18.5"
   },
   "devDependencies": {
     "@types/puppeteer": "^5.4.6",
     "@types/uuid": "^8.3.4",
+    "@types/xlsx": "^0.0.36",
     "nodemon": "^2.0.16"
   }
 }

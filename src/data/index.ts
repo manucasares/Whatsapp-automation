@@ -1,1 +1,1 @@
-export { CLIENTES } from './clientes';
+export { CLIENTES, EMPRESA } from './clientes';

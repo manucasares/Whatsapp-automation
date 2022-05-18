@@ -1,5 +1,5 @@
 import { ICliente } from 'types';
-import { NOMBRE_CONTACTO } from '../data/clientes';
+import { BASE_CONTACTO } from '../data/clientes';
 
 export const getChatTabSelector = (cliente: ICliente) =>
-  `div[data-testid="cell-frame-container"] div[role="gridcell"] span[title="${NOMBRE_CONTACTO} ${cliente.numero_identificador}"]`;
+  `div[data-testid="cell-frame-container"] div[role="gridcell"] span[title="${BASE_CONTACTO} ${cliente.numero_identificador}"]`;
