@@ -24,7 +24,6 @@ import {
   WHATSAPP_URL,
 } from './constants';
 import { ICliente } from 'types';
-import { CLIENTES } from './data';
 
 async function start() {
   console.clear();
@@ -45,13 +44,14 @@ async function startExcelFlow() {
   try {
     const excelData: any[] = await getClientesFromExcel(excelFileName);
     const clientes = getClientes(excelData);
+    console.log('clientes', clientes);
+
     const uniqueClientes = getUniqueClientes(clientes);
     const clientesWithGenre = await setClientesGenre(uniqueClientes);
 
     return clientesWithGenre;
   } catch (error: any) {
     logErrorMessage(error);
-    //
   }
 }
 

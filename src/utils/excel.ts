@@ -3,7 +3,7 @@ import XLSX from 'xlsx';
 
 import { EMPRESA } from '../data';
 import { ICliente, IRowFromExcel } from 'types';
-import { EXCEL_EXTENSION } from '../constants';
+import { EXCEL_EXTENSION, STREET_SEPARATOR } from '../constants';
 import { titleCase } from './misc';
 
 export const getExcelFileName = () => {
@@ -44,7 +44,7 @@ export const getClientes = (excelRows: IRowFromExcel[]): ICliente[] => {
       apellido,
       genero: undefined,
       telefono: telefonoSliced || 'Sin número de teléfono',
-      direccion: row.Dirección,
+      direccion: extractStreet(row.Dirección).trim(),
       empresa: EMPRESA,
     };
   });
@@ -57,3 +57,16 @@ export const getUniqueClientes = (clientes: ICliente[]) => {
     (c1, idx, arr) => idx === arr.findIndex(c2 => c2.telefono === c1.telefono)
   );
 };
+
+function extractStreet(direccion: string): string {
+  if (direccion.includes(STREET_SEPARATOR)) {
+    return direccion.split(STREET_SEPARATOR)[0];
+  }
+
+  // prettier-ignore
+  const regex = new RegExp(/[\w\s]+\d/, 'g');
+  const street = direccion.match(regex);
+
+  if (street && street[0]) return street[0];
+  return direccion;
+}

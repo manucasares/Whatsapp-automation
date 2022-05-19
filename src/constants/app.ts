@@ -1,6 +1,7 @@
 export const EXCEL_EXTENSION = '.xls';
 export const GENDERIZE_API_URL = 'https://api.genderize.io';
 export const WHATSAPP_URL = 'https://web.whatsapp.com/';
+export const STREET_SEPARATOR = '#';
 export const LAUNCH_CONFIG = {
   headless: false,
   args: ['--user-data-dir=./Google/Chrome/User Data/'],

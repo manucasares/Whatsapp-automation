@@ -12,4 +12,5 @@ export {
   VIEWPORT,
   EXCEL_EXTENSION,
   GENDERIZE_API_URL,
+  STREET_SEPARATOR,
 } from './app';
