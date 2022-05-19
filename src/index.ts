@@ -29,9 +29,9 @@ async function start() {
   console.clear();
 
   const clientes = await startExcelFlow();
-  if (!clientes) return;
+  // if (!clientes) return;
 
-  await startWhatsappFlow(clientes);
+  // await startWhatsappFlow(clientes);
 }
 
 async function startExcelFlow() {
@@ -46,10 +46,10 @@ async function startExcelFlow() {
     const clientes = getClientes(excelData);
     console.log('clientes', clientes);
 
-    const uniqueClientes = getUniqueClientes(clientes);
-    const clientesWithGenre = await setClientesGenre(uniqueClientes);
+    // const uniqueClientes = getUniqueClientes(clientes);
+    // const clientesWithGenre = await setClientesGenre(uniqueClientes);
 
-    return clientesWithGenre;
+    // return clientesWithGenre;
   } catch (error: any) {
     logErrorMessage(error);
   }

@@ -1,4 +1,5 @@
 import chalk from 'chalk';
+import { GRAMMAR_NOT_NAMES } from '../constants';
 
 import { ILogErrorMessageOptions } from 'types';
 
@@ -24,4 +25,12 @@ export const titleCase = (value: string) => {
     .split(' ')
     .map(word => word.charAt(0).toUpperCase() + word.substring(1))
     .join(' ');
+};
+
+export const lowercaseNotNames = (value: string) => {
+  const splitted = value.split(' ');
+  const transformedText = splitted
+    .map(word => (GRAMMAR_NOT_NAMES.includes(word.toLowerCase()) ? word.toLocaleLowerCase() : word))
+    .join(' ');
+  return `${transformedText.charAt(0).toUpperCase()}${transformedText.slice(1)}`;
 };

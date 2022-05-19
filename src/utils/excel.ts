@@ -4,7 +4,7 @@ import XLSX from 'xlsx';
 import { EMPRESA } from '../data';
 import { ICliente, IRowFromExcel } from 'types';
 import { EXCEL_EXTENSION, STREET_SEPARATOR } from '../constants';
-import { titleCase } from './misc';
+import { lowercaseNotNames, titleCase } from './misc';
 
 export const getExcelFileName = () => {
   const rootFiles = fs.readdirSync('./');
@@ -38,13 +38,16 @@ export const getClientes = (excelRows: IRowFromExcel[]): ICliente[] => {
     nombre = titleCase(nombre).trim();
     apellido = titleCase(apellido).trim();
 
+    const street = extractStreet(row.Dirección).trim();
+    const direccion = lowercaseNotNames(titleCase(street));
+
     return {
       numero_identificador: row.__EMPTY.toString(),
       nombre,
       apellido,
       genero: undefined,
       telefono: telefonoSliced || 'Sin número de teléfono',
-      direccion: extractStreet(row.Dirección).trim(),
+      direccion,
       empresa: EMPRESA,
     };
   });
@@ -64,7 +67,7 @@ function extractStreet(direccion: string): string {
   }
 
   // prettier-ignore
-  const regex = new RegExp(/[\w\s]+\d/, 'g');
+  const regex = new RegExp(/[a-zA-Z\s]+\d+/, 'g');
   const street = direccion.match(regex);
 
   if (street && street[0]) return street[0];
