@@ -1,7 +1,8 @@
 import puppeteer, { Page, Browser } from 'puppeteer';
-import chalk from 'chalk';
+import fs from 'fs';
 
 import {
+  generateReport,
   getChatTabSelector,
   getClientes,
   getClientesFromExcel,
@@ -23,15 +24,14 @@ import {
   WAIT_SELECTOR_OPTIONS,
   WHATSAPP_URL,
 } from './constants';
-import { ICliente } from 'types';
+import { ICliente, IWhatsappFlowReport } from 'types';
 
 async function start() {
   console.clear();
 
   const clientes = await startExcelFlow();
-  // if (!clientes) return;
-
-  // await startWhatsappFlow(clientes);
+  if (!clientes) return;
+  await startWhatsappFlow(clientes);
 }
 
 async function startExcelFlow() {
@@ -44,12 +44,10 @@ async function startExcelFlow() {
   try {
     const excelData: any[] = await getClientesFromExcel(excelFileName);
     const clientes = getClientes(excelData);
-    console.log('clientes', clientes);
+    const uniqueClientes = getUniqueClientes(clientes);
+    const clientesWithGenre = await setClientesGenre(uniqueClientes);
 
-    // const uniqueClientes = getUniqueClientes(clientes);
-    // const clientesWithGenre = await setClientesGenre(uniqueClientes);
-
-    // return clientesWithGenre;
+    return clientesWithGenre;
   } catch (error: any) {
     logErrorMessage(error);
   }
@@ -57,6 +55,10 @@ async function startExcelFlow() {
 
 async function startWhatsappFlow(clientes: ICliente[]) {
   let browser: Browser | undefined;
+  const report: IWhatsappFlowReport = {
+    messageAlreadySent: [],
+    notSendMessages: [],
+  };
 
   try {
     browser = await puppeteer.launch(LAUNCH_CONFIG);
@@ -117,7 +119,7 @@ async function startWhatsappFlow(clientes: ICliente[]) {
         }, MESSAGES_CONTAINER_SELECTOR);
 
         if (hasMessageFromOurs) {
-          // if (!shouldSendMessage) {
+          report.messageAlreadySent.push(cliente);
           logWarning(
             `\nNo se ha enviado mensaje al cliente con nombre ${cliente.nombre} ${cliente.apellido}, y numero ${cliente.telefono}, porque ya hay mensajes dentro de este chat.\n`
           );
@@ -135,6 +137,7 @@ async function startWhatsappFlow(clientes: ICliente[]) {
         await page.waitForTimeout(1000);
         // ======== //
       } catch (error) {
+        report.notSendMessages.push(cliente);
         logErrorMessage(
           `\nHubo un error con el contacto: ${cliente.nombre}, con número de teléfono: ${cliente.telefono}\n\n${error}`,
           { includeFrame: true }
@@ -142,6 +145,10 @@ async function startWhatsappFlow(clientes: ICliente[]) {
         continue;
       }
     }
+
+    const [fileName, reportText] = generateReport(report);
+
+    fs.writeFileSync(`./${fileName}.txt`, reportText);
 
     browser?.close();
   } catch (error) {
