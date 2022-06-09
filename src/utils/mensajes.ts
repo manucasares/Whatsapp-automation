@@ -8,15 +8,15 @@ export const getName = (cliente: ICliente) => {
 };
 
 export const getMensajeTelecentro = (cliente: ICliente) =>
-  `${getGenderPrefix(cliente)} ${
-    cliente.nombre
+  `${getGenderPrefix(cliente)} ${cliente.nombre} ${
+    cliente.apellido
   }, estoy retirando los equipos de TELECENTRO, mi nombre es Eduardo Casares, estoy recorriendo su zona mañana por la mañana, la dirección que tengo es ${
     cliente.direccion
   }. Para su tranquilidad le informo que yo no ingreso a su domicilio, los equipos me los entregan en la puerta. Disculpe la molestia y desde ya, muchas gracias.`;
 
 export const getMensajeDirectTV = (cliente: ICliente) =>
-  `${getGenderPrefix(cliente)} ${
-    cliente.nombre
+  `${getGenderPrefix(cliente)} ${cliente.nombre} ${
+    cliente.apellido
   }, estoy retirando los equipos de DirectTV, mi nombre es Eduardo Casares, estoy recorriendo su zona mañana por la mañana, la dirección que tengo es ${
     cliente.direccion
   }. Para su tranquilidad le informo que yo no ingreso a su domicilio, los equipos me los entregan en la puerta. Disculpe la molestia y desde ya, muchas gracias.`;

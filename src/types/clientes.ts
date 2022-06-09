@@ -1,6 +1,7 @@
 import { Mensaje } from './mensajes';
 
 export interface ICliente {
+  uuid: string;
   nombre: string;
   apellido: string;
   numero_identificador: string;

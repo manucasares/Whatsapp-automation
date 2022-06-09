@@ -1,17 +1,19 @@
-import puppeteer, { Page, Browser } from 'puppeteer';
 import fs from 'fs';
+
+import puppeteer, { Page, Browser } from 'puppeteer';
 
 import {
   generateReport,
   getChatTabSelector,
-  getClientes,
-  getClientesFromExcel,
+  getClients,
+  getClientsFromExcel,
   getExcelFileName,
-  getUniqueClientes,
+  getUniqueClients,
   logErrorMessage,
   logWarning,
   MENSAJES,
   setClientesGenre,
+  startClientsPrompt,
 } from './utils';
 import {
   CHAT_INPUT_SELECTOR,
@@ -36,16 +38,20 @@ async function start() {
 
 async function startExcelFlow() {
   const excelFileName = getExcelFileName();
+
   if (!excelFileName)
     return logErrorMessage(
       `No se ha encontrado un archivo con Excel de nombre: "${excelFileName}" y extension: ${EXCEL_EXTENSION}`
     );
 
   try {
-    const excelData: any[] = await getClientesFromExcel(excelFileName);
-    const clientes = getClientes(excelData);
-    const uniqueClientes = getUniqueClientes(clientes);
-    const clientesWithGenre = await setClientesGenre(uniqueClientes);
+    const excelData: any[] = await getClientsFromExcel(excelFileName);
+    const clientes = getClients(excelData);
+    const uniqueClientes = getUniqueClients(clientes);
+
+    // TODO: inquirer
+    const selectedClients = await startClientsPrompt(uniqueClientes);
+    const clientesWithGenre = await setClientesGenre(selectedClients);
 
     return clientesWithGenre;
   } catch (error: any) {
@@ -106,7 +112,7 @@ async function startWhatsappFlow(clientes: ICliente[]) {
         // Checking if chat has messages, if It has, we don't send any message
         await page.waitForSelector(MESSAGES_CONTAINER_SELECTOR);
         // Wait for messages to load
-        const hasMessageFromOurs = await page.evaluate((selector: string) => {
+        const hasMessageFromUs = await page.evaluate((selector: string) => {
           const messages = [...document.querySelectorAll(`${selector} > div`)];
 
           const hasMessageFromOurs = messages.some(message => {
@@ -118,7 +124,7 @@ async function startWhatsappFlow(clientes: ICliente[]) {
           return Promise.resolve(hasMessageFromOurs);
         }, MESSAGES_CONTAINER_SELECTOR);
 
-        if (hasMessageFromOurs) {
+        if (hasMessageFromUs) {
           report.messageAlreadySent.push(cliente);
           logWarning(
             `\nNo se ha enviado mensaje al cliente con nombre ${cliente.nombre} ${cliente.apellido}, y numero ${cliente.telefono}, porque ya hay mensajes dentro de este chat.\n`

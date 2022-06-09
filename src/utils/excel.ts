@@ -1,10 +1,11 @@
 import fs from 'fs';
-import XLSX from 'xlsx';
 
 import { EMPRESA } from '../data';
 import { ICliente, IRowFromExcel } from 'types';
 import { EXCEL_EXTENSION, STREET_SEPARATOR } from '../constants';
 import { lowercaseNotNames, titleCase } from './misc';
+import { v4 as uuidv4 } from 'uuid';
+import XLSX from 'xlsx';
 
 export const getExcelFileName = () => {
   const rootFiles = fs.readdirSync('./');
@@ -13,7 +14,7 @@ export const getExcelFileName = () => {
   return excelName;
 };
 
-export const getClientesFromExcel = (excelName: string): Promise<any> => {
+export const getClientsFromExcel = (excelName: string): Promise<any> => {
   return new Promise((resolve, reject) => {
     const excelWorkbook: XLSX.WorkBook = XLSX.readFile(excelName);
     const sheetName = excelWorkbook.SheetNames;
@@ -29,7 +30,7 @@ export const getClientesFromExcel = (excelName: string): Promise<any> => {
   });
 };
 
-export const getClientes = (excelRows: IRowFromExcel[]): ICliente[] => {
+export const getClients = (excelRows: IRowFromExcel[]): ICliente[] => {
   const clientes: ICliente[] = excelRows.map(row => {
     const telefonoSliced = row.Telefono?.toString()
       .replace(/[\s\-]/g, '')
@@ -42,6 +43,7 @@ export const getClientes = (excelRows: IRowFromExcel[]): ICliente[] => {
     const direccion = lowercaseNotNames(titleCase(street));
 
     return {
+      uuid: uuidv4(),
       numero_identificador: row.__EMPTY.toString(),
       nombre,
       apellido,
@@ -55,7 +57,7 @@ export const getClientes = (excelRows: IRowFromExcel[]): ICliente[] => {
   return clientes;
 };
 
-export const getUniqueClientes = (clientes: ICliente[]) => {
+export const getUniqueClients = (clientes: ICliente[]) => {
   return clientes.filter(
     (c1, idx, arr) => idx === arr.findIndex(c2 => c2.telefono === c1.telefono)
   );
