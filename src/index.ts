@@ -17,6 +17,7 @@ import {
 } from './utils';
 import {
   CHAT_INPUT_SELECTOR,
+  CONTACT_BASE_NAME,
   EXCEL_EXTENSION,
   LAUNCH_CONFIG,
   MESSAGES_CONTAINER_SELECTOR,
@@ -30,6 +31,10 @@ import { ICliente, IWhatsappFlowReport } from 'types';
 
 async function start() {
   console.clear();
+
+  logWarning('====================================================');
+  logWarning(`USANDO NOMBRE BASE DE CONTACTO: ${CONTACT_BASE_NAME}`);
+  logWarning('====================================================\n\n');
 
   const clientes = await startExcelFlow();
   if (!clientes) return;
@@ -47,10 +52,11 @@ async function startExcelFlow() {
   try {
     const excelData: any[] = await getClientsFromExcel(excelFileName);
     const clientes = getClients(excelData);
-    const uniqueClientes = getUniqueClients(clientes);
+    // const uniqueClientes = getUniqueClients(clientes);
 
-    // TODO: inquirer
-    const selectedClients = await startClientsPrompt(uniqueClientes);
+    // Inquirer
+    const selectedClients = await startClientsPrompt(clientes);
+    // const selectedClients = await startClientsPrompt(uniqueClientes);
     const clientesWithGenre = await setClientesGenre(selectedClients);
 
     return clientesWithGenre;
@@ -97,7 +103,7 @@ async function startWhatsappFlow(clientes: ICliente[]) {
         await page.waitForTimeout(3000);
 
         // Chat Tab
-        const chatTab = await page.waitForSelector(getChatTabSelector(cliente), { timeout: 10000 });
+        const chatTab = await page.waitForSelector(getChatTabSelector(cliente), { timeout: 2000 });
 
         if (!chatTab) return;
         await chatTab.click();
@@ -109,19 +115,19 @@ async function startWhatsappFlow(clientes: ICliente[]) {
         await page.waitForSelector(MESSAGES_SPINNER_SELECTOR, { hidden: true });
         // ==
 
-        // Checking if chat has messages, if It has, we don't send any message
+        // Checking if chat has messages, if it has, we don't send any message
         await page.waitForSelector(MESSAGES_CONTAINER_SELECTOR);
         // Wait for messages to load
         const hasMessageFromUs = await page.evaluate((selector: string) => {
           const messages = [...document.querySelectorAll(`${selector} > div`)];
 
-          const hasMessageFromOurs = messages.some(message => {
+          const hasMessageFromUs = messages.some(message => {
             const dataIdAttr = message.getAttribute('data-id');
             if (!dataIdAttr) return false;
             return dataIdAttr.startsWith('true');
           });
 
-          return Promise.resolve(hasMessageFromOurs);
+          return Promise.resolve(hasMessageFromUs);
         }, MESSAGES_CONTAINER_SELECTOR);
 
         if (hasMessageFromUs) {
@@ -139,7 +145,7 @@ async function startWhatsappFlow(clientes: ICliente[]) {
 
         const getMensaje = MENSAJES[cliente.empresa];
         await chatInputBox.type(getMensaje(cliente));
-        // await page.keyboard.press('Enter');
+        await page.keyboard.press('Enter');
         await page.waitForTimeout(1000);
         // ======== //
       } catch (error) {
