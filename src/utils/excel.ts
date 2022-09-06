@@ -4,7 +4,7 @@ import XLSX from 'xlsx';
 
 import { ICliente, IRowFromExcel } from 'types';
 import { EXCEL_EXTENSION, STREET_SEPARATOR, EMPRESA } from '../constants';
-import { lowercaseNotNames, titleCase } from './misc';
+import { logErrorMessage, lowercaseNotNames, titleCase } from './misc';
 
 export const getExcelFileName = () => {
   const rootFiles = fs.readdirSync('./');
@@ -31,6 +31,8 @@ export const getClientsFromExcel = (excelName: string): Promise<any> => {
 
 export const getClients = (excelRows: IRowFromExcel[]): ICliente[] => {
   const clientes: ICliente[] = excelRows.map(row => {
+    console.log('row.Telefono', row.Telefono);
+
     const telefonoSliced = row.Telefono?.toString()
       .replace(/[\s\-]/g, '')
       .slice(-8);
@@ -43,7 +45,7 @@ export const getClients = (excelRows: IRowFromExcel[]): ICliente[] => {
 
     return {
       uuid: uuidv4(),
-      numero_identificador: row.__EMPTY.toString(),
+      numero_identificador: row.id.toString(),
       nombre,
       apellido,
       genero: undefined,
@@ -74,3 +76,19 @@ function extractStreet(direccion: string): string {
   if (street && street[0]) return street[0];
   return direccion;
 }
+
+export const trimRowsKeys = (excelData: any[]) => {
+  return excelData.map(row => {
+    const rowTrimmed = { ...row };
+
+    Object.keys(row).forEach(key => {
+      const replaced = key.trim();
+      if (key !== replaced) {
+        rowTrimmed[replaced] = rowTrimmed[key];
+        delete rowTrimmed[key];
+      }
+    });
+
+    return rowTrimmed;
+  });
+};

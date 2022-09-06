@@ -14,6 +14,7 @@ import {
   MENSAJES,
   setClientesGenre,
   startClientsPrompt,
+  trimRowsKeys,
 } from './utils';
 import {
   CHAT_INPUT_SELECTOR,
@@ -51,7 +52,7 @@ async function startExcelFlow() {
 
   try {
     const excelData: any[] = await getClientsFromExcel(excelFileName);
-    const clientes = getClients(excelData);
+    const clientes = getClients(trimRowsKeys(excelData));
     // const uniqueClientes = getUniqueClients(clientes);
 
     // Inquirer

@@ -1,10 +1,10 @@
-export const EXCEL_EXTENSION = '.xls';
+export const EXCEL_EXTENSION = '.xlsx';
 export const GENDERIZE_API_URL = 'https://api.genderize.io';
 export const WHATSAPP_URL = 'https://web.whatsapp.com/';
 export const STREET_SEPARATOR = '#';
 export const LAUNCH_CONFIG = {
   headless: false,
-  args: ['--user-data-dir=./Google/Chrome/User Data/'],
+  // args: ['--user-data-dir=./Google/Chrome/User Data/'],
   // devtools: true,
   // slowMo: 50,
 };
@@ -16,5 +16,5 @@ export const WAIT_SELECTOR_OPTIONS = {
 export const VIEWPORT = { width: 1366, height: 768 };
 export const GRAMMAR_NOT_NAMES = ['de', 'el', 'la', 'las', 'los', 'y'];
 
-export const CONTACT_BASE_NAME = 'TELECENTRO AI';
+export const CONTACT_BASE_NAME = 'TELECENTRO AK';
 export const EMPRESA = 'TELECENTRO';
