@@ -3,3 +3,4 @@ TODO.MD
 *.xls
 *.xlsx
 *.txt
+.env

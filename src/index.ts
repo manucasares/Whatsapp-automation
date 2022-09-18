@@ -2,6 +2,9 @@ import fs from 'fs';
 
 import puppeteer, { Page, Browser } from 'puppeteer';
 
+import dotenv from 'dotenv';
+dotenv.config();
+
 import {
   generateReport,
   getChatTabSelector,

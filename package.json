@@ -9,6 +9,7 @@
   "dependencies": {
     "axios": "^0.27.2",
     "chalk": "4.0.0",
+    "dotenv": "^16.0.2",
     "inquirer": "^8.2.4",
     "moment": "^2.29.3",
     "puppeteer": "^13.7.0",

@@ -31,8 +31,6 @@ export const getClientsFromExcel = (excelName: string): Promise<any> => {
 
 export const getClients = (excelRows: IRowFromExcel[]): ICliente[] => {
   const clientes: ICliente[] = excelRows.map(row => {
-    console.log('row.Telefono', row.Telefono);
-
     const telefonoSliced = row.Telefono?.toString()
       .replace(/[\s\-]/g, '')
       .slice(-8);
