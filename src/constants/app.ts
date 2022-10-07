@@ -17,5 +17,5 @@ export const WAIT_SELECTOR_OPTIONS = {
 export const VIEWPORT = { width: 1366, height: 768 };
 export const GRAMMAR_NOT_NAMES = ['de', 'el', 'la', 'las', 'los', 'y'];
 
-export const CONTACT_BASE_NAME = 'TELECENTRO AM';
+export const CONTACT_BASE_NAME = 'TELECENTRO AN';
 export const EMPRESA = 'TELECENTRO';
