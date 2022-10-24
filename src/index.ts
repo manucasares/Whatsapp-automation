@@ -112,16 +112,11 @@ async function startWhatsappFlow(clientes: ICliente[]) {
         if (!chatTab) return;
         await chatTab.click();
 
-        // ======== //
-
-        // Waiting for messages to load
-        await page.waitForSelector(MESSAGES_SPINNER_SELECTOR);
-        await page.waitForSelector(MESSAGES_SPINNER_SELECTOR, { hidden: true });
-        // ==
+        await page.waitForTimeout(1000);
 
         // Checking if chat has messages, if it has, we don't send any message
         await page.waitForSelector(MESSAGES_CONTAINER_SELECTOR);
-        // Wait for messages to load
+
         const hasMessageFromUs = await page.evaluate((selector: string) => {
           const messages = [...document.querySelectorAll(`${selector} > div`)];
 
@@ -144,12 +139,13 @@ async function startWhatsappFlow(clientes: ICliente[]) {
 
         // Chat Input
         const chatInputBox = await page.waitForSelector(CHAT_INPUT_SELECTOR, WAIT_SELECTOR_OPTIONS);
+
         if (!chatInputBox) return;
         await chatInputBox.click();
 
         const getMensaje = MENSAJES[cliente.empresa];
         await chatInputBox.type(getMensaje(cliente));
-        await page.keyboard.press('Enter');
+        // await page.keyboard.press('Enter');
         await page.waitForTimeout(1000);
         // ======== //
       } catch (error) {
