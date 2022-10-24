@@ -145,7 +145,7 @@ async function startWhatsappFlow(clientes: ICliente[]) {
 
         const getMensaje = MENSAJES[cliente.empresa];
         await chatInputBox.type(getMensaje(cliente));
-        // await page.keyboard.press('Enter');
+        await page.keyboard.press('Enter');
         await page.waitForTimeout(1000);
         // ======== //
       } catch (error) {
