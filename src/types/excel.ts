@@ -1,9 +1,8 @@
 export interface IRowFromExcel {
-  id: number;
-  Nombre: string;
+  ID: number;
+  NOMBRE: string;
   'Orden Pedido': number;
-  Cliente: string;
-  Dirección: string;
-  Notas: string;
-  Telefono: number;
+  DOMICILIO: string;
+  NOTAS: string;
+  TELEFONO: number;
 }
