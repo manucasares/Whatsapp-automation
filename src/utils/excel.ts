@@ -31,19 +31,19 @@ export const getClientsFromExcel = (excelName: string): Promise<any> => {
 
 export const getClients = (excelRows: IRowFromExcel[]): ICliente[] => {
   const clientes: ICliente[] = excelRows.map(row => {
-    const telefonoSliced = row.Telefono?.toString()
+    const telefonoSliced = row.TELEFONO?.toString()
       .replace(/[\s\-]/g, '')
       .slice(-8);
-    let [apellido, nombre] = row.Cliente.trim().split(',');
+    let [apellido, nombre] = row.NOMBRE.trim().split(',');
     nombre = titleCase(nombre).trim();
     apellido = titleCase(apellido).trim();
 
-    const street = extractStreet(row.Dirección).trim();
+    const street = extractStreet(row.DOMICILIO).trim();
     const direccion = lowercaseNotNames(titleCase(street));
 
     return {
       uuid: uuidv4(),
-      numero_identificador: row.id.toString(),
+      numero_identificador: row.ID.toString(),
       nombre,
       apellido,
       genero: undefined,
