@@ -28,3 +28,13 @@ export const startClientsPrompt = async (clientes: ICliente[]) => {
 
   return selectedClients;
 };
+
+export const promptContactBaseName = async () => {
+  const { contact_base_name } = await inquirer.prompt<{ contact_base_name: string }>({
+    type: 'input',
+    name: 'contact_base_name',
+    message: 'Escriba el nombre de contacto base, por ej: TELECENTRO AB',
+  });
+
+  return contact_base_name.trim();
+};

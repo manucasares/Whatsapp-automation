@@ -10,4 +10,4 @@ export {
 export { logErrorMessage, titleCase, logWarning, lowercaseNotNames } from './misc';
 export { setClientesGenre } from './clientes';
 export { generateReport } from './whatsapp';
-export { startClientsPrompt } from './inquirer';
+export { startClientsPrompt, promptContactBaseName } from './inquirer';

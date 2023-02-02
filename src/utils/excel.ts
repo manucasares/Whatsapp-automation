@@ -3,12 +3,12 @@ import { v4 as uuidv4 } from 'uuid';
 import XLSX from 'xlsx';
 
 import { ICliente, IRowFromExcel } from 'types';
-import { EXCEL_EXTENSION, STREET_SEPARATOR, EMPRESA } from '../constants';
-import { logErrorMessage, lowercaseNotNames, titleCase } from './misc';
+import { STREET_SEPARATOR, EMPRESA } from '../constants';
+import { lowercaseNotNames, titleCase } from './misc';
 
 export const getExcelFileName = () => {
   const rootFiles = fs.readdirSync('./');
-  const regex = new RegExp(EXCEL_EXTENSION, 'g');
+  const regex = new RegExp(/\.xlsx?$/, 'g');
   const excelName = rootFiles.find(file => file.match(regex));
   return excelName;
 };
