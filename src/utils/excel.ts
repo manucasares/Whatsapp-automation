@@ -36,7 +36,7 @@ export const getClients = (excelRows: IRowFromExcel[]): ICliente[] => {
     }
     return row.ID;
   });
-  //
+  // //
   const clientes: ICliente[] = rowsFiltered.map((row, idx) => {
     const telefonoSliced = row.TELEFONO?.toString()
       .replace(/[\s\-]/g, '')
