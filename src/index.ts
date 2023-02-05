@@ -15,14 +15,13 @@ import {
   logErrorMessage,
   logWarning,
   MENSAJES,
+  promptContactBaseName,
   setClientesGenre,
   startClientsPrompt,
   trimRowsKeys,
 } from './utils';
 import {
   CHAT_INPUT_SELECTOR,
-  CONTACT_BASE_NAME,
-  EXCEL_EXTENSION,
   LAUNCH_CONFIG,
   MESSAGES_CONTAINER_SELECTOR,
   SIDEBAR_SEARCH_INPUT_SELECTOR,
@@ -35,10 +34,6 @@ import { ICliente, IWhatsappFlowReport } from 'types';
 async function start() {
   console.clear();
 
-  logWarning('====================================================');
-  logWarning(`USANDO NOMBRE BASE DE CONTACTO: ${CONTACT_BASE_NAME}`);
-  logWarning('====================================================\n\n');
-
   const clientes = await startExcelFlow();
   if (!clientes) return;
   await startWhatsappFlow(clientes);
@@ -49,7 +44,7 @@ async function startExcelFlow() {
 
   if (!excelFileName)
     return logErrorMessage(
-      `No se ha encontrado un archivo con Excel de nombre: "${excelFileName}" y extension: ${EXCEL_EXTENSION}`
+      `No se ha encontrado un archivo con Excel de nombre: "${excelFileName}"`
     );
 
   try {
@@ -69,6 +64,13 @@ async function startExcelFlow() {
 }
 
 async function startWhatsappFlow(clientes: ICliente[]) {
+  // Prompt for contact base name
+  const contactBaseName: string = await promptContactBaseName();
+
+  logWarning('====================================================');
+  logWarning(`USANDO NOMBRE BASE DE CONTACTO: ${contactBaseName}`);
+  logWarning('====================================================\n\n');
+
   let browser: Browser | undefined;
   const report: IWhatsappFlowReport = {
     messageAlreadySent: [],
@@ -106,7 +108,9 @@ async function startWhatsappFlow(clientes: ICliente[]) {
         await page.waitForTimeout(3000);
 
         // Chat Tab
-        const chatTab = await page.waitForSelector(getChatTabSelector(cliente), { timeout: 2000 });
+        const chatTab = await page.waitForSelector(getChatTabSelector(cliente, contactBaseName), {
+          timeout: 2000,
+        });
 
         if (!chatTab) return;
         await chatTab.click();

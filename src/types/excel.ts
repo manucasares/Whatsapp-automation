@@ -6,3 +6,4 @@ export interface IRowFromExcel {
   NOTAS: string;
   TELEFONO: number;
 }
+

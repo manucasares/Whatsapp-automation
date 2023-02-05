@@ -3,12 +3,12 @@ import { v4 as uuidv4 } from 'uuid';
 import XLSX from 'xlsx';
 
 import { ICliente, IRowFromExcel } from 'types';
-import { EXCEL_EXTENSION, STREET_SEPARATOR, EMPRESA } from '../constants';
-import { logErrorMessage, lowercaseNotNames, titleCase } from './misc';
+import { STREET_SEPARATOR, EMPRESA } from '../constants';
+import { lowercaseNotNames, titleCase } from './misc';
 
 export const getExcelFileName = () => {
   const rootFiles = fs.readdirSync('./');
-  const regex = new RegExp(EXCEL_EXTENSION, 'g');
+  const regex = new RegExp(/\.xlsx?$/, 'g');
   const excelName = rootFiles.find(file => file.match(regex));
   return excelName;
 };
@@ -30,7 +30,14 @@ export const getClientsFromExcel = (excelName: string): Promise<any> => {
 };
 
 export const getClients = (excelRows: IRowFromExcel[]): ICliente[] => {
-  const clientes: ICliente[] = excelRows.map(row => {
+  const rowsFiltered = excelRows.filter((row, idx) => {
+    if (!row.ID) {
+      console.log(`No se encontró el cliente con ID: ${idx + 2}.`);
+    }
+    return row.ID;
+  });
+  // //
+  const clientes: ICliente[] = rowsFiltered.map((row, idx) => {
     const telefonoSliced = row.TELEFONO?.toString()
       .replace(/[\s\-]/g, '')
       .slice(-8);
