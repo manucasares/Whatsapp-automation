@@ -30,7 +30,14 @@ export const getClientsFromExcel = (excelName: string): Promise<any> => {
 };
 
 export const getClients = (excelRows: IRowFromExcel[]): ICliente[] => {
-  const clientes: ICliente[] = excelRows.map(row => {
+  const rowsFiltered = excelRows.filter((row, idx) => {
+    if (!row.ID) {
+      console.log(`No se encontró el cliente con ID: ${idx + 2}.`);
+    }
+    return row.ID;
+  });
+
+  const clientes: ICliente[] = rowsFiltered.map((row, idx) => {
     const telefonoSliced = row.TELEFONO?.toString()
       .replace(/[\s\-]/g, '')
       .slice(-8);
