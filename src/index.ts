@@ -6,6 +6,7 @@ import dotenv from 'dotenv';
 dotenv.config();
 
 import {
+  clearInputField,
   generateReport,
   getChatTabSelector,
   getClients,
@@ -90,15 +91,15 @@ async function startWhatsappFlow(clientes: ICliente[]) {
         console.log(
           `\n\nInicia: #${cliente.numero_identificador} ${cliente.nombre} ${cliente.apellido}`
         );
-        //
+
         // Sidebar Input
         const sidebarInputSearch = await page.waitForSelector(
           SIDEBAR_SEARCH_INPUT_SELECTOR,
           WAIT_SELECTOR_OPTIONS
         );
 
-        // Setting empty string as input value
-        await page.$eval(SIDEBAR_SEARCH_INPUT_SELECTOR, input => (input.textContent = ''));
+        // Clearing search input
+        await clearInputField(page, SIDEBAR_SEARCH_INPUT_SELECTOR);
 
         if (!sidebarInputSearch) return;
         await sidebarInputSearch.click();
@@ -107,6 +108,7 @@ async function startWhatsappFlow(clientes: ICliente[]) {
 
         await page.waitForTimeout(3000);
 
+        // FIXME: getChatTabSelector no lo encuentra, chequear si es bug o no
         // Chat Tab
         const chatTab = await page.waitForSelector(getChatTabSelector(cliente, contactBaseName), {
           timeout: 2000,
