@@ -10,4 +10,5 @@ export {
 export { logErrorMessage, titleCase, logWarning, lowercaseNotNames } from './misc';
 export { setClientesGenre } from './clientes';
 export { generateReport } from './whatsapp';
+export { clearInputField } from './puppeteer';
 export { startClientsPrompt, promptContactBaseName } from './inquirer';
