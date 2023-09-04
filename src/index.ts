@@ -24,7 +24,6 @@ import {
 import {
   CHAT_INPUT_SELECTOR,
   LAUNCH_CONFIG,
-  MESSAGES_CONTAINER_SELECTOR,
   SIDEBAR_SEARCH_INPUT_SELECTOR,
   VIEWPORT,
   WAIT_SELECTOR_OPTIONS,
@@ -118,29 +117,6 @@ async function startWhatsappFlow(clientes: ICliente[]) {
         await chatTab.click();
 
         await page.waitForTimeout(1000);
-
-        // Checking if chat has messages, if it has, we don't send any message
-        await page.waitForSelector(MESSAGES_CONTAINER_SELECTOR);
-
-        const hasMessageFromUs = await page.evaluate((selector: string) => {
-          const messages = [...document.querySelectorAll(`${selector} > div`)];
-
-          const hasMessageFromUs = messages.some(message => {
-            const dataIdAttr = message.getAttribute('data-id');
-            if (!dataIdAttr) return false;
-            return dataIdAttr.startsWith('true');
-          });
-
-          return Promise.resolve(hasMessageFromUs);
-        }, MESSAGES_CONTAINER_SELECTOR);
-
-        if (hasMessageFromUs) {
-          report.messageAlreadySent.push(cliente);
-          logWarning(
-            `\nNo se ha enviado mensaje al cliente con nombre ${cliente.nombre} ${cliente.apellido}, y numero ${cliente.telefono}, porque ya hay mensajes dentro de este chat.\n`
-          );
-          continue;
-        }
 
         // Chat Input
         const chatInputBox = await page.waitForSelector(CHAT_INPUT_SELECTOR, WAIT_SELECTOR_OPTIONS);

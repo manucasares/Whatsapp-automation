@@ -41,7 +41,19 @@ export const getClients = (excelRows: IRowFromExcel[]): ICliente[] => {
     const telefonoSliced = row.TELEFONO?.toString()
       .replace(/[\s\-]/g, '')
       .slice(-8);
+
+    if (!row.NOMBRE) {
+      throw new Error(`row.NOMBRE es ${row.NOMBRE}`);
+    }
+
+    const fullName = row.NOMBRE.trim();
+
+    if (!fullName.includes(',')) {
+      throw new Error(`Fila del excel con nombre ${fullName}, no incluye una coma.`);
+    }
+
     let [apellido, nombre] = row.NOMBRE.trim().split(',');
+
     nombre = titleCase(nombre).trim();
     apellido = titleCase(apellido).trim();
 
