@@ -43,7 +43,7 @@ export const getClients = (excelRows: IRowFromExcel[]): ICliente[] => {
       .slice(-8);
 
     if (!row.NOMBRE) {
-      throw new Error(`row.NOMBRE es ${row.NOMBRE}`);
+      throw new Error(`row.NOMBRE es ${row.NOMBRE}. El id es ${row.ID}.`);
     }
 
     const fullName = row.NOMBRE.trim();
