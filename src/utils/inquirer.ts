@@ -29,6 +29,16 @@ export const startClientsPrompt = async (clientes: ICliente[]) => {
   return selectedClients;
 };
 
+export const promptUseSpecificGenre = async () => {
+  const { useSpecificGenre } = await inquirer.prompt<{ useSpecificGenre: boolean }>({
+    type: 'confirm',
+    name: 'useSpecificGenre',
+    message: 'Desea usar un género específico para todos los clientes?',
+  });
+
+  return useSpecificGenre;
+};
+
 export const promptContactBaseName = async () => {
   const { contact_base_name } = await inquirer.prompt<{ contact_base_name: string }>({
     type: 'input',

@@ -27,5 +27,6 @@ export const MENSAJES: Record<Mensaje, (cliente: ICliente) => string> = {
 };
 
 const getGenderPrefix = (cliente: ICliente): string => {
+  if (!cliente.genero) return 'Sr./Sra.';
   return cliente.genero == 'f' ? 'Sra.' : 'Sr.';
 };

@@ -17,6 +17,7 @@ import {
   logWarning,
   MENSAJES,
   promptContactBaseName,
+  promptUseSpecificGenre,
   setClientesGenre,
   startClientsPrompt,
   trimRowsKeys,
@@ -54,10 +55,15 @@ async function startExcelFlow() {
 
     // Inquirer
     const selectedClients = await startClientsPrompt(clientes);
+    const useSpecificGenre = await promptUseSpecificGenre();
     // const selectedClients = await startClientsPrompt(uniqueClientes);
-    const clientesWithGenre = await setClientesGenre(selectedClients);
 
-    return clientesWithGenre;
+    let clientesWithGenre: ICliente[] | undefined;
+    if (useSpecificGenre) {
+      clientesWithGenre = await setClientesGenre(selectedClients);
+    }
+
+    return useSpecificGenre ? clientesWithGenre : selectedClients;
   } catch (error: any) {
     logErrorMessage(error);
   }
