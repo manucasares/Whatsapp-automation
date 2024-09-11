@@ -1,6 +1,7 @@
 import fs from 'fs';
 
 import puppeteer, { Page, Browser } from 'puppeteer';
+import moment from 'moment';
 
 import dotenv from 'dotenv';
 dotenv.config();
@@ -33,10 +34,18 @@ import {
 import { ICliente, IWhatsappFlowReport } from 'types';
 
 async function start() {
+  const txtFlowEnabled = true;
+
   console.clear();
 
   const clientes = await startExcelFlow();
   if (!clientes) return;
+
+  if (txtFlowEnabled) {
+    await startTxtFlow(clientes);
+    return;
+  }
+
   await startWhatsappFlow(clientes);
 }
 
@@ -154,6 +163,23 @@ async function startWhatsappFlow(clientes: ICliente[]) {
     console.log('err', error);
     browser?.close();
   }
+}
+
+async function startTxtFlow(clientes: ICliente[]) {
+  let txtFileContent = '';
+
+  for (const cliente of clientes) {
+    const getMensaje = MENSAJES[cliente.empresa];
+    const mensaje = getMensaje(cliente);
+    txtFileContent += `#${cliente.numero_identificador} ${cliente.nombre} ${cliente.apellido}
+  ${mensaje}
+    \n`;
+  }
+
+  const fileName = moment().format('MMMM Do YYYY, h:mm:ss a').replace(/:/g, '-');
+  fs.writeFileSync(`./${fileName}.txt`, txtFileContent);
+
+  console.log('txtFileContent', txtFileContent);
 }
 
 start();
