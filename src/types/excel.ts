@@ -5,5 +5,5 @@ export interface IRowFromExcel {
   DOMICILIO: string;
   NOTAS: string;
   TELEFONO: number;
+  LOCALIDAD: string;
 }
-
