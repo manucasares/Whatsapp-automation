@@ -10,9 +10,9 @@ export const getName = (cliente: ICliente) => {
 export const getMensajeTelecentro = (cliente: ICliente) =>
   `${getGenderPrefix(cliente)} ${cliente.nombre} ${
     cliente.apellido
-  }, estoy retirando los equipos de TELECENTRO, mi nombre es Eduardo Casares, estoy recorriendo su zona mañana por la mañana, la dirección que tengo es ${
+  }, estoy retirando los equipos de TELECENTRO, mi nombre es Eduardo Casares, estoy recorriendo su zona en el día de mañana, la dirección que tengo es ${
     cliente.direccion
-  }. Para su tranquilidad le informo que yo no ingreso a su domicilio, los equipos me los entregan en la puerta. Disculpe la molestia y desde ya, muchas gracias.`;
+  }. Por favor confirmar si se puede pasar o no. Para su tranquilidad le informo que yo no ingreso a su domicilio, los equipos me los entregan en la puerta. Disculpe la molestia y desde ya, muchas gracias.`;
 
 export const getMensajeDirectTV = (cliente: ICliente) =>
   `${getGenderPrefix(cliente)} ${cliente.nombre} ${
