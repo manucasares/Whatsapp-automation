@@ -5,6 +5,7 @@ export interface ICliente {
   nombre: string;
   apellido: string;
   numero_identificador: string;
+  localidad: string;
   telefono: string;
   direccion: string;
   empresa: Mensaje;

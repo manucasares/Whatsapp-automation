@@ -59,6 +59,7 @@ export const getClients = (excelRows: IRowFromExcel[]): ICliente[] => {
 
     const street = extractStreet(row.DOMICILIO).trim();
     const direccion = lowercaseNotNames(titleCase(street));
+    const localidad = row.LOCALIDAD || '';
 
     return {
       uuid: uuidv4(),
@@ -69,6 +70,7 @@ export const getClients = (excelRows: IRowFromExcel[]): ICliente[] => {
       telefono: telefonoSliced || 'Sin número de teléfono',
       direccion,
       empresa: EMPRESA,
+      localidad,
     };
   });
 
